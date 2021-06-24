@@ -1,12 +1,15 @@
 #include "holberton.h"
 /**
- * mul - Short description, single line
- * @a: Description of parameter a * b
- * @b: Description of parameter a * b
- * Return: result of a * b
+ * mul - writes the character a to stdout
+ * @a: The character to print
+ * @b: The character to print
+ *
+ * Return: z
+ * On error, -1 is returned, and errno is set appropriately.
  */
 int mul(int a, int b)
 {
-	return (a * b);
-
+int z;
+z = a * b;
+return (z);
 }
