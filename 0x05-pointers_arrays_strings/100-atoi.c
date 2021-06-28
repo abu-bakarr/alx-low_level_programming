@@ -1,26 +1,47 @@
 #include "holberton.h"
-#include <stdio.h>
+#include <stdlib.h>
 
 /**
- * _atoi - Converts a character array to an integer
- *
- * Description: Respects leading '-' and '+' signs
- * integer inside string may be preceded by any number of non-integer values
- * but will only copy the first whole integer found.
- *
- * @s: character array to convert
- * Return: returns integer from array, returns 0 if none found
+ * _atoi -program that return an int number found inside a char
+ * @s: inlet
+ * Return: a2i
  */
+
 int _atoi(char *s)
 {
-	int count = 0;
-	int neg = -1;
-	int rvalue = 0;
+int a2i;
+int min;
+char *aux;
+int flag = 0;
 
-	for (; s[count] != '\0' && (s[count] < '0' || s[count] > '9'); count++)
-		if (s[count] == '-')
-			neg *= -1;
-		for (; s[count] != '\0' && (s[count] >= '0' && s[count] <= '9'); count++)
-			rvalue = (rvalue * 10) - (s[count] - '0');
-	return  (rvalue * neg);
+
+	aux = s;
+
+	for (; *aux != '\0';)
+	{
+		if (*aux >= '0' && *aux <= '9')
+			break;
+
+		if (*aux == '-')
+			min++;
+		aux++;
+	}
+
+	for (; *s != '\0';)
+	{
+		if (*s >= '0' && *s <= '9')
+		{
+			a2i *= 10 + (*s - '0');
+			flag = 1;
+		}
+		else
+		{
+			if (flag == 1)
+				break;
+		}
+	s++;
+	}
+	if (min % 2 != 0)
+		a2i = a2i * -1;
+return (a2i);
 }
