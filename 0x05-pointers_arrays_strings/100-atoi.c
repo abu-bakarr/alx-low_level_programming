@@ -1,47 +1,40 @@
 #include "holberton.h"
-#include <stdlib.h>
-
 /**
- * _atoi -program that return an int number found inside a char
- * @s: inlet
- * Return: a2i
- */
-
+* _atoi(:)? (- digits)?
+*
+* @s: input char
+* Return: int
+*/
 int _atoi(char *s)
 {
-int a2i;
-int min;
-char *aux;
-int flag = 0;
-
-
-	aux = s;
-
-	for (; *aux != '\0';)
-	{
-		if (*aux >= '0' && *aux <= '9')
-			break;
-
-		if (*aux == '-')
-			min++;
-		aux++;
-	}
-
-	for (; *s != '\0';)
-	{
-		if (*s >= '0' && *s <= '9')
-		{
-			a2i *= 10 + (*s - '0');
-			flag = 1;
-		}
-		else
-		{
-			if (flag == 1)
-				break;
-		}
-	s++;
-	}
-	if (min % 2 != 0)
-		a2i = a2i * -1;
-return (a2i);
+int i, m = 0, e = 0;
+unsigned int n = 0;
+for (i = 0; s[i] != '\0'; i++)
+{
+if (s[i] == '-')
+{
+m = m + 1;
+}
+else if (s[i] >= '0' && s[i] <= '9')
+{
+n = 10 * n + (s[i] - '0');
+e = e + 1;
+}
+else if (e != 0 && ((s[i] >= 'a' && s[i] <= 'z') || (s[i] <= ' ')))
+{
+break;
+}
+}
+if (e == 0 && s[i] == '\0')
+{
+return (0);
+}
+else
+{
+if (m % 2 != 0)
+{
+n = n * -1;
+}
+return (n);
+}
 }
