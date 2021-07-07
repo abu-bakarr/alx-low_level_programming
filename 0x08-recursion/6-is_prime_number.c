@@ -1,3 +1,4 @@
+#include "holberton.h"
 /**
  * is_prime_number - test if prime number or not
  * @n: int thats being tested
