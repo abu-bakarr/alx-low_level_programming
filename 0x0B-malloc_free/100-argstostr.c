@@ -1,35 +1,40 @@
+#include "holberton.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include "holberton.h"
 /**
-* argstostr - function to concatenate 2 strings
-* @ac: number of arguments
-* @av: vector of arguments
-* Return:  or NULL
-*/
+ * argstostr - concatenates all arguments of program.
+ * @ac: argument count
+ * @av: pointer to argument vectors
+ * Return: pointer with  a new string.
+ */
 char *argstostr(int ac, char **av)
 {
-	int len = 0;
-	int i, j, k;
-	char *str;
+	char  *concatenation;
+	int i, j, lenconcatenation, len;
+
+	i = j = lenconcatenation = len = 0;
 
 	if (ac == 0 || av == NULL)
 		return (NULL);
 
-	for (i = 0; i < ac; i++, len++)
-		for (j = 0; av[i][j]; j++, len++)
-		{}
-
-	str = malloc((len + 1) * sizeof(char));
-	if (str == NULL)
+	for (i = 0; av[i] != NULL; i++)
+	{
+		for (j = 0; av[i][j] != '\0'; j++)
+			len++;
+		len++;
+	}
+	len++;
+	concatenation = malloc(len * sizeof(char));
+	if (concatenation == NULL)
 		return (NULL);
 
-	for (i = 0, k = 0; i < ac; i++, k++)
+	for (i = 0; i < ac; i++)
 	{
-		for (j = 0; av[i][j]; j++, k++)
-			str[k] = av[i][j];
-		str[k] = '\n';
+		for (j = 0; av[i][j] != '\0'; j++, lenconcatenation++)
+			concatenation[lenconcatenation] = av[i][j];
+		concatenation[lenconcatenation] = '\n';
+		lenconcatenation++;
 	}
-	str[k] = '\0';
-	return (str);
+	concatenation[lenconcatenation] = '\0';
+	return (concatenation);
 }
