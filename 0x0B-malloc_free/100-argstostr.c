@@ -1,46 +1,35 @@
-/**
- * _strlen - return length of string
- * @s: string being measured
- * Return: length of string
- */
+#include <stdlib.h>
+#include <stdio.h>
 #include "holberton.h"
-int _strlen(char *s)
-{
-	int t = 0;
-
-	while (s[t] != '\0')
-	{
-		t += 1;
-	}
-	return (t);
-}
-
 /**
- * argstostr - concatenates all arguments
- * @ac: argument counter
- * @av: argument vector
- * Return: 0
- */
-#include "holberton.h"
+* argstostr - function to concatenate 2 strings
+* @ac: number of arguments
+* @av: vector of arguments
+* Return:  or NULL
+*/
 char *argstostr(int ac, char **av)
 {
-	int l, m;
-	char *catstr;
-	int start = 0, length = 0;
+	int len = 0;
+	int i, j, k;
+	char *str;
 
 	if (ac == 0 || av == NULL)
 		return (NULL);
-	for (l = 0; l < ac; l++)
-		length += _strlen(av[l]);
-	catstr = malloc(sizeof(char) * (length + ac + 1));
-	if (catstr == NULL)
+
+	for (i = 0; i < ac; i++, len++)
+		for (j = 0; av[i][j]; j++, len++)
+		{}
+
+	str = malloc((len + 1) * sizeof(char));
+	if (str == NULL)
 		return (NULL);
-	for (l = 0; l < ac; l++)
+
+	for (i = 0, k = 0; i < ac; i++, k++)
 	{
-		for (m = 0; av[l][m] != '\0'; m++)
-			catstr[start++] = av[l][m];
-		catstr[start++] = '\n';
+		for (j = 0; av[i][j]; j++, k++)
+			str[k] = av[i][j];
+		str[k] = '\n';
 	}
-	catstr[start] = '\0';
-	return (catstr);
+	str[k] = '\0';
+	return (str);
 }
