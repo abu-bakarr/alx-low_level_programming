@@ -1,41 +1,46 @@
 #include "holberton.h"
-#include <stdio.h>
 #include <stdlib.h>
+
 /**
- * string_nconcat - void
- * @s1: string
- * @s2: string
- * @n: unsigned integer
- * Return: p
-*/
+ * string_nconcat - concatenates two strings
+ * @s1: string 1
+ * @s2: string 2
+ * @n: number of bytes
+ * Return: result or NULL
+ */
 char *string_nconcat(char *s1, char *s2, unsigned int n)
 {
-unsigned int j;
-char *p;
-int i = 0;
-if (s1 == NULL)
-s1 = "";
-if (s2 == NULL)
-s2 = "";
-while (s1[i] != 0)
-{
-i++;
+	unsigned int i, j, k;
+	char *result/*, *empty*/;
+
+	i = j = k = 0;
+/*	empty = "";*/
+	if (s1 == NULL)
+		s1 = "";
+	if (s2 == NULL)
+		s2 = "";
+	while (s1[i])
+		i++;
+	while (s2[j])
+		j++;
+	j++;
+	result = malloc((i + n) * sizeof(*result) + 1);
+	if (result == NULL)
+		return (NULL);
+	i = 0;
+	while (s1[i])
+	{
+		result[k] = s1[i];
+		i++;
+		k++;
+	}
+	j = 0;
+	while (s2[j] && j < n)
+	{
+		result[k] = s2[j];
+		j++;
+		k++;
+	}
+	result[k] = '\0';
+	return (result);
 }
-p = malloc((i + n + 1) * (sizeof(char)));
-if (p == NULL)
-{
-return (NULL);
-}
-i = j = 0;
-while (s1[i] != 0)
-{
-p[i] = s1[i];
-i++;
-}
-while (j < n && s2[j] != 0)
-{
-p[i] = s2[j];
-i++, j++;
-}
-p[i] = '\0';
-return (p);
