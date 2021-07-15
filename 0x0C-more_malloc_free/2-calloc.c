@@ -1,20 +1,47 @@
-#include "holberton.h"
+#include <stdio.h>
 #include <stdlib.h>
 /**
- * _calloc - concatenates two strings
- * @size: elements
- * @nmemb: size in bytes
- * Return: result or NULL
- */
+* _memset - Short description, single line
+* @s: Description of parameter size
+* @b: Description of parameter size
+* @n: Description of parameter size
+* Return: 0
+*/
+char *_memset(char *s, char b, unsigned int n)
+{
+	int i = 0, num = n;
+
+	for ( ; i < num; i++)
+	{
+		s[i] = b;
+	}
+
+	return (s);
+}
+
+/**
+* _calloc - Short description, single line
+* @nmemb: Description of parameter size
+* @size: Description of parameter size
+* Return: 0
+*/
 void *_calloc(unsigned int nmemb, unsigned int size)
 {
-	char *my_array;
-	unsigned int i;
+	int elements = nmemb, memory_s = size;
+	void *p;
 
-	my_array = malloc(nmemb * size);
-	if (size == 0 || nmemb == 0 || malloc(nmemb * size) == NULL)
+	if (nmemb == 0)
 		return (NULL);
-	for (i = 0; i < (nmemb * size); i++)
-		my_array[i] = 0;
-	return (my_array);
+
+	if (size == 0)
+		return (NULL);
+
+	p = malloc(elements * memory_s);
+
+	if (p == NULL)
+		return (NULL);
+
+	_memset((void *)p, 0, elements * memory_s);
+
+	return (p);
 }
