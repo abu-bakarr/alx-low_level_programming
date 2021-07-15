@@ -1,58 +1,53 @@
 #include "holberton.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 /**
- * _strlen - string length
- * @str: string
- * Return: length string
- */
-unsigned int _strlen(char *str)
-{
-	unsigned int con = 0;
-
-	while (str[con] != 0)
-		con++;
-	return (con);
-}
-
-/**
- * *string_nconcat - string concatenation
- * @s1: char 1
- * @s2: char 2
- * @n: number
- * Return: new string
+ * string_nconcat - Function that concatenates two strings.
+ * @s1: Pointer type char
+ * @s2: Pointer type char
+ * @n: Variable type unsigned int
+ * Return: A pointer
  */
 
 char *string_nconcat(char *s1, char *s2, unsigned int n)
 {
-	char *newstrn;
-	unsigned int strlen_s1;
-	unsigned int strlen_s2;
-	unsigned int _malloc, i;
+	char *a;
+	unsigned int i, x, len1 = 0, len2 = 0, flag = 0;
 
 	if (s1 == NULL)
 		s1 = "";
+
 	if (s2 == NULL)
 		s2 = "";
 
-	strlen_s1 = _strlen(s1);
-	strlen_s2 = _strlen(s2);
+	while (s1[len1] != '\0')
+		len1++;
 
-	if (n >= strlen_s2)
-		_malloc = strlen_s1 + strlen_s2;
-	else
-		_malloc = strlen_s1 + n;
+	while (s2[len2] != '\0')
+		len2++;
 
-	newstrn = malloc(sizeof(char) * (_malloc + 1));
-	if (newstrn == NULL)
-		return (NULL);
-	for (i = 0; i < _malloc; i++)
+	a = malloc(sizeof(char) * (len1 + n + 1));
+
+	if (a == NULL)
 	{
-		if (i < strlen_s1)
-			newstrn[i] = s1[i];
-		else
-			newstrn[i] = s2[i - strlen_s1];
+		return (NULL);
 	}
-	newstrn[i] = '\0';
-	return (newstrn);
+	else
+	{
+		if (n >= len2)
+			flag = len2;
+		else
+			flag = n;
+
+		for (i = 0; i < len1; i++)
+			a[i] = s1[i];
+
+		for (x = 0; x < flag; x++, i++)
+			a[i] = s2[x];
+
+		a[i] = '\0';
+
+		return (a);
+	}
 }
