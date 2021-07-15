@@ -1,22 +1,20 @@
 #include "holberton.h"
-#include <stdio.h>
 #include <stdlib.h>
 /**
- * _calloc - void
- * @nmemb: string
- * @size: string
- * Return: p
-*/
+ * _calloc - concatenates two strings
+ * @size: elements
+ * @nmemb: size in bytes
+ * Return: result or NULL
+ */
 void *_calloc(unsigned int nmemb, unsigned int size)
 {
-char *p;
-unsigned int i;
-if (nmemb == 0 || size == 0)
-return (NULL);
-p = malloc(nmemb * size);
-if (p == NULL)
-return (NULL);
-for (i = 0; i < (nmemb * size); i++)
-p[i] = 0;
-return (p);
+	char *my_array;
+	unsigned int i;
+
+	my_array = malloc(nmemb * size);
+	if (size == 0 || nmemb == 0 || malloc(nmemb * size) == NULL)
+		return (NULL);
+	for (i = 0; i < (nmemb * size); i++)
+		my_array[i] = 0;
+	return (my_array);
 }
