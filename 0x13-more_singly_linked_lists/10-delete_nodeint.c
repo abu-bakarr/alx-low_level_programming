@@ -1,39 +1,47 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "lists.h"
 
 /**
- * delete_nodeint_at_index - delete node in the index list.
+ * delete_nodeint_at_index - delete node at given index
+ * @head: linked list to be operated on
+ * @index: position to add new node at
  *
- * @head: A pointer to the first node of the list
- * @index: index of the list.
- * Return: Value of a node index.
+ * Return: Always 0.
  */
 int delete_nodeint_at_index(listint_t **head, unsigned int index)
 {
-	unsigned int i = 0;
-	listint_t *tmp_node = *head;
-	listint_t *after_node;
+	listint_t *current_node, *tmp, *place_holder;
+	unsigned int index_count = 1;
 
-	if (*head == NULL)
+	if (!*head)
 		return (-1);
-	if (index == 0)
+
+	current_node = *head;
+
+	if (!index)
 	{
-		tmp_node = (*head)->next;
-		free(*head);
-		*head = tmp_node;
+		tmp = *head;
+		current_node = current_node->next;
+		free(tmp);
+		*head = current_node;
 		return (1);
 	}
 
-	while (i < index - 1)
+	while (!(!current_node->next))
 	{
-		tmp_node = tmp_node->next;
-		++i;
-		if (!tmp_node)
-			return (-1);
+		if (index_count == index)
+		{
+			tmp = current_node;
+			break;
+		}
+		index_count++;
+		current_node = current_node->next;
 	}
-	after_node = tmp_node->next->next;
-	free(tmp_node->next);
-	tmp_node->next = after_node;
+
+
+	if (index != index_count)
+		return (-1);
+	free(current_node->next);
+	place_holder = tmp->next;
+	tmp->next = place_holder->next;
 	return (1);
 }
