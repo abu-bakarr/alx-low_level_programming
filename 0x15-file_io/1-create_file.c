@@ -1,48 +1,44 @@
 #include "holberton.h"
-/**
- * _strlen - gets string length
- * @text: character pointer to string
- * Return: size of string
- */
-size_t _strlen(char *text)
-{
-	size_t i;
 
-	for (i = 0; text[i]; i++)
-		;
-	return (i);
-}
 /**
- * create_file - creates a file addes content to it
- * @filename: name of the file (first argument)
- * @text_content: content of file (second argument)
- * Return: 1 if successful else -1
+ *create_file- creates a file
+ *@filename: name of file to be made
+ *@text_content: the text to add to file
+ *Return: 1 on success -1 on fail
  */
+
+
 int create_file(const char *filename, char *text_content)
 {
-	int file, check;
+	int fd, test, i;
 
-	if (filename == NULL)
+
+	if (!filename)
 		return (-1);
-
-	/*if text_content is null create empty file*/
-	if (text_content == NULL)
+	if (!text_content)
 	{
-		text_content = "";
+		fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0600);
+		close(fd);
+		return (1);
 	}
 
-	/*create or Truncate and set privilates to rw for owner*/
-	file = open(filename, O_CREAT | O_TRUNC | O_WRONLY, 0600);
-	if (file == -1)
-		return (-1);
 
-	/*write to file, the content , content length*/
-	check = write(file, text_content, _strlen(text_content));
-	if (check == -1)
+
+	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0600);
+	if (fd == -1)
 	{
-		close(file);
 		return (-1);
 	}
-	close(file);
+
+	for (i = 0 ; text_content[i] ; i++)
+		;
+
+	test = write(fd, text_content, i);
+	if (test == -1)
+	{
+		return (-1);
+	}
+
+	close(fd);
 	return (1);
 }
