@@ -1,29 +1,58 @@
 #include "holberton.h"
+
 /**
-*append_text_to_file - function that appends text at the end of a file.
-*@filename:char strinf of file name
-*@text_content: size or number or letter to read.
-*Return:return 1 if It is succes or -1 if it is fail
-*/
+ * _strlen - length of a string
+ * @s: length of a string
+ * Return: returns length of a string
+ */
+
+int _strlen(char *s)
+{
+	int a = 0;
+
+	while (s[a] != '\0')
+	{
+	a++;
+	}
+
+	return (a);
+}
+/**
+ * append_text_to_file - function that appends a text
+ * at the end of a file
+ * @filename: name of the file
+ * @text_content: string to write to the file
+ * Return: 1 or -1 if fails
+ */
 int append_text_to_file(const char *filename, char *text_content)
 {
-	int fdopen, status, i;
+	int new_file, append;
 
 	if (filename == NULL)
 		return (-1);
+
+	new_file = open(filename, O_WRONLY | O_APPEND);
+
+	if (new_file == -1)
+		return (-1);
+
 	if (text_content == NULL)
-		return (1);
+	{
+		if (new_file == -1)
+		{
+			return (-1);
+		}
+		else
+		{
+			return (1);
+		}
+	}
 
-	fdopen = open(filename, O_APPEND | O_WRONLY);
-	if (fdopen == -1)
+	append = write(new_file, text_content, _strlen(text_content));
+
+	if (append == -1)
 		return (-1);
 
-	for (i = 0; text_content[i] != '\0'; i++)
-		;
-	status = write(fdopen, text_content, i);
-	if (status == -1)
-		return (-1);
-
-	close(fdopen);
+	close(new_file);
 	return (1);
 }
