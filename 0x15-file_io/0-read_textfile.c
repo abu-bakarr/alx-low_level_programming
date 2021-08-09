@@ -1,45 +1,38 @@
 #include "holberton.h"
-
 /**
- * read_textfile - read a text file and print it to POSIX stdout
- * @filename: the filename to read
- * @letters: the number of letters, buffer size
- *
- * Return: Always 0.
- */
+*read_textfile - reads a text file and prints it to the POSIX standard output
+*@filename:char strinf of file name
+*@letters: size or number or letter to read.
+*Return: number of letter read and print or 0 If it is error.
+*/
 ssize_t read_textfile(const char *filename, size_t letters)
 {
-	ssize_t fd, rd, ot, fail = -1;
-	char *buf;
+	int fdopen;
+	ssize_t readcount, writecount;
+	char *buffer;
 
-	if (!filename)
+	if (filename == NULL)
 		return (0);
 
-	buf = malloc(sizeof(void *) * letters);
-
-	if (!buf)
+	fdopen = open(filename, O_RDWR);
+	if (fdopen == -1)
 		return (0);
 
-	fd = open(filename, O_RDONLY);
-
-	if (fd == fail)
+	buffer = malloc(sizeof(char) * letters);
+	if (buffer == NULL)
+	{
+		free(buffer);
+		return (0);
+	}
+	readcount = read(fdopen, buffer, letters);
+	if (readcount == -1)
 		return (0);
 
-	rd = read(fd, buf, letters);
-
-	if (rd == fail)
+	writecount = write(STDOUT_FILENO, buffer, readcount);
+	if (writecount == -1 || readcount != writecount)
 		return (0);
+	free(buffer);
 
-	ot = write(STDOUT_FILENO, buf, rd);
-
-	if (ot == fail)
-		return (0);
-
-	if (ot != rd)
-		return (0);
-
-	close(fd);
-	free(buf);
-
-	return (ot);
+	close(fdopen);
+	return (writecount);
 }
