@@ -1,49 +1,44 @@
 #include "holberton.h"
-
 /**
- * read_textfile - function that reads a text file and prints it to the POSIX
- * standard output
- * @filename: Const char for name of file to be printed
- * @letters: Size_t for number of bytes to be printed
- * Return: Bytes read, 0 if error reading or writing to std output
+ * read_textfile - function that reads a text file
+ * and prints it to the standard output
+ * @filename: name of the file
+ * @letters: amount of letters to be read and printed
+ * Return: (bytes2read)
+ * actual number of letters it could read and print
  */
-
 ssize_t read_textfile(const char *filename, size_t letters)
 {
-	int fd;
-	ssize_t  n_read, n_write;
-	char *buf;
+	ssize_t bytes2read, bytes2write;
+	int f;
+	char *aux;
 
-	buf = malloc(sizeof(char) * (letters + 1));
-
-	if (buf == NULL)
+	if (filename == NULL) /* checks if there is anything to read */
 		return (0);
 
-	fd = open(filename, O_RDONLY);
+	f = open(filename, O_RDONLY); /* read the file only */
 
-	if (fd == -1 || filename == NULL)
-	{
-		free(buf);
+	if (f == -1) /* if fail read, write, open == -1 */
 		return (0);
-	}
 
-	n_read = read(fd, buf, letters);
-
-	if (n_read < 0)
-	{
-		free(buf);
+	aux = malloc(sizeof(char) * letters); /* space for \0 */
+	if (aux == NULL)
 		return (0);
-	}
 
-	n_write = write(STDOUT_FILENO, buf, n_read);
+	bytes2read = read(f, aux, letters);
+	/* reading into f based on letters, of size aux */
 
-	if (n_write < 0)
-	{
-		free(buf);
+	if (bytes2read == -1)
 		return (0);
-	}
 
-	close(fd);
-	free(buf);
-	return (n_read);
+	bytes2write =  write(STDOUT_FILENO, aux, bytes2read);
+	/* write to std out of buf based on bytes_read */
+
+	if (bytes2write == -1)
+		return (0);
+
+	free(aux);
+	close(f);
+
+	return (bytes2read);
 }
