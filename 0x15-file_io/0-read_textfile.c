@@ -1,39 +1,44 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "holberton.h"
 /**
- * read_textfile - function reads a text file and prints it to standard output
- * @filename: file
- * @letters: number of letters to read and print
+ * read_textfile - reads a file and write it to sdio
  *
- * Return: number of letters read and printed, 0 if fail
+ * @filename: SE
+ * @letters: SE
+ * Return: number of letters or -1
  */
 ssize_t read_textfile(const char *filename, size_t letters)
 {
-	int fd, n_read, n_write;
-	char *s;
+	char *buffer;
+	int fileDescriptor;
+	ssize_t count, checkCount;
 
-	if (filename == NULL)
+	if (!filename)
 		return (0);
-	s = malloc(letters * sizeof(char) + 1);
-	if (!s)
-		return (0);
-	fd = open(filename, O_RDONLY);
-	if (fd == -1)
+	buffer = malloc(sizeof(char) * letters);
+	if (!buffer)
 	{
-		free(s);
 		return (0);
 	}
-	n_read = read(fd, s, letters);
-	if (n_read == -1)
+	fileDescriptor = open(filename, O_RDONLY);
+	if (fileDescriptor == -1)
 	{
-		free(s);
+		free(buffer);
 		return (0);
 	}
-	n_write = write(STDOUT_FILENO, s, n_read);
-	close(fd);
-	free(s);
-	if (n_read == n_write)
-		return (n_write);
-	return (0);
+	count = read(fileDescriptor, buffer, letters);
+	if (count == -1)
+	{
+		free(buffer);
+		return (0);
+	}
+	/* same as write(1, file, number of characters)*/
+	checkCount = write(STDOUT_FILENO, buffer, count);
+	if (checkCount == -1 || (count != checkCount))
+	{
+		free(buffer);
+		return (0);
+	}
+	free(buffer);
+	close(fileDescriptor);
+	return (checkCount);
 }
