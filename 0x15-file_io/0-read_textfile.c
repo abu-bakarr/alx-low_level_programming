@@ -1,50 +1,48 @@
-#include "holberton.h"
+#include "main.h"
 
 /**
- * read_textfile - read a certain size and prints to std output
- * @filename: file to read from
- * @letters: size to read
- * Return: actual size read and printed
- */
-
+ * read_textfile - a function that reads a text file and prints it
+ *                to POSIX standard output.
+ *
+ * @filename: is the file to read
+ * @letters: number of letters to read and print from file
+ *
+ * Return: 0 if it fails or actual number of letters it could
+ *         read and print
+*/
 ssize_t read_textfile(const char *filename, size_t letters)
 {
-	int fd; /* file descriptor */
-	ssize_t n_read, n_wrote;
+	int file;
+	ssize_t read_check, wcount;
 	char *buffer;
 
-	if (filename == NULL)
+	if (filename == NULL) /*check if file is present*/
 		return (0);
 
-	/* open */
-	fd = open(filename, O_RDONLY);
-	if (fd == -1)
+	file = open(filename, O_RDONLY); /*open file*/
+
+	if (file == -1)
 		return (0);
 
-	/* malloc buffer */
+	/*get the size of buffer from number of letters*/
 	buffer = malloc(sizeof(char) * letters);
 	if (buffer == NULL)
-		return (0);
-
-	/* read */
-	n_read = read(fd, buffer, letters);
-	if (n_read == -1)
 	{
 		free(buffer);
-		close(fd);
 		return (0);
 	}
 
-	/* write */
-	n_wrote = write(STDOUT_FILENO, buffer, n_read);
-	if (n_wrote == -1)
-	{
-		free(buffer);
-		close(fd);
+	read_check = read(file, buffer, letters); /*read file*/
+	if (read_check == -1) /*check if read failed*/
 		return (0);
-	}
 
-	close(fd);
-	return (n_read);
+	wcount = write(STDOUT_FILENO, buffer, read_check); /*write to POSIX*/
+	if (wcount == -1 || read_check != wcount) /*check if write failed*/
+		return (0);
 
+	free(buffer);
+
+	close(file); /*close file*/
+
+	return (wcount);
 }
