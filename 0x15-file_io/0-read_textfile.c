@@ -1,44 +1,39 @@
 #include "holberton.h"
+
 /**
- * read_textfile - reads a file and write it to sdio
+ * read_textfile- function that reads a text file and prints it to stdout
+ * @filename: Requiescat
+ * @letters: number of letters contained in file
  *
- * @filename: SE
- * @letters: SE
- * Return: number of letters or -1
+ * Return: 0
  */
+
 ssize_t read_textfile(const char *filename, size_t letters)
 {
+	ssize_t mainfile, readpermfile, writepermfile;
 	char *buffer;
-	int fileDescriptor;
-	ssize_t count, checkCount;
 
-	if (!filename)
+	if (filename == NULL)
 		return (0);
-	buffer = malloc(sizeof(char) * letters);
-	if (!buffer)
-	{
+
+	buffer = malloc(letters * sizeof(char));
+	if (buffer == NULL)
 		return (0);
-	}
-	fileDescriptor = open(filename, O_RDONLY);
-	if (fileDescriptor == -1)
-	{
-		free(buffer);
-		return (0);
-	}
-	count = read(fileDescriptor, buffer, letters);
-	if (count == -1)
-	{
-		free(buffer);
-		return (0);
-	}
-	/* same as write(1, file, number of characters)*/
-	checkCount = write(STDOUT_FILENO, buffer, count);
-	if (checkCount == -1 || (count != checkCount))
-	{
-		free(buffer);
-		return (0);
-	}
-	free(buffer);
-	close(fileDescriptor);
-	return (checkCount);
+
+	mainfile = open(filename, O_RDONLY);
+	if (mainfile == -1)
+		return (0); /* condition: file cannot be open or read */
+
+	readpermfile = read(mainfile, buffer, letters);
+	if (readpermfile == -1)
+		return (0); /* condition: file cannot be open or read */
+
+	writepermfile = write(STDOUT_FILENO, buffer, readpermfile);
+	if (writepermfile == -1)
+		return (0); /* condition: file cannot be open or read */
+
+	free(buffer); /* for every malloc you have to free */
+	close(mainfile);
+	return (writepermfile);
+
 }
